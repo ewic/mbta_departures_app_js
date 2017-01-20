@@ -1,0 +1,17 @@
+{
+  "name": "mbta_departures_board_js",
+  "version": "1.0.0",
+  "description": "The Departures Board for the MBTA, written in JS, for use in Electron",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "electron": "^1.4.15",
+    "jquery": "^3.1.1",
+    "papaparse": "^4.1.2"
+  }
+}
