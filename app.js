@@ -7,7 +7,7 @@ var url = "http://developer.mbta.com/lib/gtrtfs/Departures.csv"; //The url of ou
 // For mysterious reasons it likes to repeat itself if
 // written out in the plain html
 var head = $('<tr>');
-var items = ["count", "Origin", "Trip", "Destination", "Scheduled", "Time", "Lateness", "Track", "Status"]
+var items = ["Origin", "Trip", "Destination", "Scheduled Time", "Lateness", "Track", "Status"]
 items.forEach(function(item) {
     element = $("<th>");
     element.html(item);
@@ -18,9 +18,7 @@ $("#departures_board thead").append(head);
 $.get(url, function( response ) {
   var response = Papa.parse(response, {header: true});
 
-  var i = 0;
   response.data.forEach( function(datum) {
-    i++;
     //Some work on the scheduled time...
     //Convert the time from epoch time to js Date object
     var scheduledTime = new Date(parseInt(datum.ScheduledTime)*1000);
@@ -47,11 +45,13 @@ $.get(url, function( response ) {
     // Set it back into the object because it makes the next piece more consistent.
     datum.ScheduledTime = scheduledTime;
 
+    // Lateness is in seconds, let's make that into minutes...
+    datum.Lateness = Math.floor(datum.Lateness/60) + " min";
+
     // Create a table row
     var row = $('<tr>');
 
     // Create all the table cells
-    var countCell = $('<td>');
     var originCell = $('<td>');
     var tripCell = $('<td>');
     var destinationCell = $('<td>');
@@ -61,7 +61,6 @@ $.get(url, function( response ) {
     var statusCell = $('<td>');    
 
     // Maybe this will work...
-    row.append(countCell);
     row.append(originCell);
     row.append(tripCell);
     row.append(destinationCell);
@@ -71,7 +70,6 @@ $.get(url, function( response ) {
     row.append(statusCell);
 
     // Add each cell to the row
-    countCell.html(i);
     originCell.html(datum.Origin);
     tripCell.html(datum.Trip);
     destinationCell.html(datum.Destination);
